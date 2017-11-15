@@ -3,7 +3,7 @@
   <spriteName>spr_player</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-1</depth>
   <persistent>0</persistent>
   <parentName>par_gameobject</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -427,6 +427,11 @@ if (blaster_cooldown == 0)
             blaster_cooldown = 10;
             }
         }
+    }
+    
+if (y &gt; obj_control.level_height*32+256)
+    {
+    event_user(0);
     }
 </string>
           </argument>
