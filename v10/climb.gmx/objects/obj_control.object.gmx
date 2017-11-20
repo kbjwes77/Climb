@@ -312,9 +312,10 @@ else
     }
 
 // debug - add lives
-if (keyboard_check(ord("Z")))
+if (keyboard_check(ord("Z"))) or (score &gt;= 10)
     {
     lives++;
+    score -= 10;
     }
 
 // toggle test mode/edit mode
@@ -758,6 +759,13 @@ for (var i=0; i&lt;lives; i++)
     {
     draw_sprite(spr_heart,-1,8+i*48,8);
     };
+    
+// draw score
+draw_set_halign(1);
+draw_set_valign(1);
+draw_set_font(fnt_score);
+draw_set_color(c_white);
+draw_text_transformed(display_get_gui_width()/2,24,score,1,1,10*sin(current_time/128));
 
 // show tile switch panel
 if (global.edit)
@@ -976,60 +984,63 @@ if (global.debug)
           <argument>
             <kind>1</kind>
             <string>// wires
-draw_primitive_begin(pr_linelist);
-var size = ds_list_size(level_logic)/5;
-var vert = 0;
-for (var i=0; i&lt;size; i++)
+if (global.edit) or (global.debug)
     {
-    //draw_line_width(level_logic[|i]*32+16,level_logic[|i+1]*32+16,level_logic[|i+2]*32+16,level_logic[|i+3]*32+16,3);
-    var x1 = level_logic[|i*5+0]*32+16;
-    var y1 = level_logic[|i*5+1]*32+16;
-    var x2 = level_logic[|i*5+2]*32+16;
-    var y2 = level_logic[|i*5+3]*32+16;
-    var on = level_logic_objects[|i*2+0].logic_output;
-    
-    if (on)
+    draw_primitive_begin(pr_linelist);
+    var size = ds_list_size(level_logic)/5;
+    var vert = 0;
+    for (var i=0; i&lt;size; i++)
         {
-        color1 = $005500;
-        color2 = $00FF00;
-        }
-    else
-        {
-        color1 = $000000;
-        color2 = $555555;
-        }
-    
-    var lx1, ly1, lx2, ly2;
-    for(var w=-1; w&lt;=1; w++;)
-        {
-        lx1 = x1;
-        ly1 = y1;
-        lx2 = 0;
-        ly2 = 0;
-        for(j=0.0; j&lt;=1; j+=0.2)
-            {
-            var t = 2*(-0.5+j);
-            lx2 = x1 + (x2-x1)*j;
-            ly2 = y1 + (y2-y1)*j - (t*t-1)*8;
-            
-            draw_vertex_colour(lx1+w,ly1,merge_color(color1,color2,0.5 + sin(current_time/360 - (j+0.0)*2*pi)*0.5),1.0);
-            draw_vertex_colour(lx2+w,ly2,merge_color(color1,color2,0.5 + sin(current_time/360 - (j+0.2)*2*pi)*0.5),1.0);
-            
-            lx1 = lx2;
-            ly1 = ly2;
-            };
-        };
-    
-    vert++;
-    if (vert &gt; 24) and (i != size-1)
-        {
-        vert = 0;
+        //draw_line_width(level_logic[|i]*32+16,level_logic[|i+1]*32+16,level_logic[|i+2]*32+16,level_logic[|i+3]*32+16,3);
+        var x1 = level_logic[|i*5+0]*32+16;
+        var y1 = level_logic[|i*5+1]*32+16;
+        var x2 = level_logic[|i*5+2]*32+16;
+        var y2 = level_logic[|i*5+3]*32+16;
+        var on = level_logic_objects[|i*2+0].logic_output;
         
-        draw_primitive_end();
-        draw_primitive_begin(pr_linelist);
-        }
-    };
-draw_primitive_end();
+        if (on)
+            {
+            color1 = $005500;
+            color2 = $00FF00;
+            }
+        else
+            {
+            color1 = $000000;
+            color2 = $555555;
+            }
+        
+        var lx1, ly1, lx2, ly2;
+        for(var w=-1; w&lt;=1; w++;)
+            {
+            lx1 = x1;
+            ly1 = y1;
+            lx2 = 0;
+            ly2 = 0;
+            for(j=0.0; j&lt;=1; j+=0.2)
+                {
+                var t = 2*(-0.5+j);
+                lx2 = x1 + (x2-x1)*j;
+                ly2 = y1 + (y2-y1)*j - (t*t-1)*8;
+                
+                draw_vertex_colour(lx1+w,ly1,merge_color(color1,color2,0.5 + sin(current_time/360 - (j+0.0)*2*pi)*0.5),1.0);
+                draw_vertex_colour(lx2+w,ly2,merge_color(color1,color2,0.5 + sin(current_time/360 - (j+0.2)*2*pi)*0.5),1.0);
+                
+                lx1 = lx2;
+                ly1 = ly2;
+                };
+            };
+        
+        vert++;
+        if (vert &gt; 24) and (i != size-1)
+            {
+            vert = 0;
+            
+            draw_primitive_end();
+            draw_primitive_begin(pr_linelist);
+            }
+        };
+    draw_primitive_end();
+    }
 
 if (global.edit)
     {

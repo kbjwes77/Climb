@@ -105,8 +105,8 @@ if (!cinematic)
     
     if (count != 0)
         {
-        view_xview[0] += (((view_x_max+view_x_min)/2 - view_wview[0]/2) - view_xview[0])*0.25;
-        view_yview[0] += (((view_y_max+view_y_min)/2 - view_hview[0]/2) - view_yview[0])*0.25;
+        view_xview[0] += (((view_x_max+view_x_min)/2 - view_wview[0]/2) - view_xview[0])*(0.25-0.15*focus);
+        view_yview[0] += (((view_y_max+view_y_min)/2 - view_hview[0]/2) - view_yview[0])*(0.25-0.15*focus);
         }
     else
         {
@@ -121,8 +121,8 @@ if (!cinematic)
     }
 else
     {
-    view_xview[0] = (view_xview[0]*7+cinematic_x-view_wview[0]/2)/8;
-    view_yview[0] = (view_yview[0]*7+cinematic_y-view_hview[0]/2)/8;
+    view_xview[0] += ((cinematic_x-view_wview[0]/2) - view_xview[0])*0.1;
+    view_yview[0] += ((cinematic_y-view_hview[0]/2) - view_yview[0])*0.1;
     }
 
 shake_x *= 0.75;
@@ -150,17 +150,13 @@ shake_y *= 0.75;
           <argument>
             <kind>1</kind>
             <string>if (dialog or cinematic)
-    focus += (1 - focus)*0.2;
+    focus += (1 - focus)*0.1;
 else
-    focus += (0 - focus)*0.2;
+    focus += (0 - focus)*0.1;
 
 // cinematic event handling
 if (cinematic)
     {
-    draw_set_color(c_black);
-    draw_rectangle(0,0,dw,128*focus,0);
-    draw_rectangle(0,dh,dw,dh-128*focus,0);
-
     with(obj_player)
         {
         can_move = false;
@@ -178,6 +174,13 @@ if (cinematic)
                 }
             }
         }
+    }
+
+if (focus &gt; 0)
+    {
+    draw_set_color(c_black);
+    draw_rectangle(0,0,dw,128*focus,0);
+    draw_rectangle(0,dh,dw,dh-128*focus,0);
     }
 
 // text box dialogue code

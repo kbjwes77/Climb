@@ -358,8 +358,17 @@ if (!instance_place_special(x+xspeed,y,par_entity_collider))
 else
     {
     var sx = sign(xspeed);
+    var tries = 0;
     while(!instance_place_special(x+sx,y,par_entity_collider))
+        {
         x += sx;
+        tries++;
+        if (tries &gt; 1000)
+            {
+            show_debug_message("Breaking free of x while loop.");
+            break;
+            }
+        }
     
     xspeed *= 0.8;
     }
@@ -375,8 +384,17 @@ if (!instance_place_special(x,y+yspeed,par_entity_collider))
 else
     {
     var sy = sign(yspeed);
+    var tries = 0;
     while(!instance_place_special(x,y+sy,par_entity_collider))
+        {
         y += sy;
+        tries++;
+        if (tries &gt; 1000)
+            {
+            show_debug_message("Breaking free of y while loop.");
+            break;
+            }
+        }
     
     if (yspeed &lt; 0)
         yspeed *= 0.6;

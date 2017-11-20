@@ -30,6 +30,7 @@
   <sprites name="sprites">
     <sprite>sprites\spr_player</sprite>
     <sprite>sprites\spr_wall</sprite>
+    <sprite>sprites\spr_gamewall</sprite>
     <sprite>sprites\spr_passwall</sprite>
     <sprite>sprites\spr_lava</sprite>
     <sprite>sprites\spr_door</sprite>
@@ -112,6 +113,7 @@
   </scripts>
   <fonts name="fonts">
     <font>fonts\fnt_dialogue</font>
+    <font>fonts\fnt_score</font>
   </fonts>
   <objects name="objects">
     <object>objects\obj_control</object>
@@ -156,6 +158,7 @@
       <object>objects\obj_blast</object>
       <object>objects\obj_air</object>
       <object>objects\obj_particle_sprite</object>
+      <object>objects\obj_gamewall</object>
       <objects name="enemies">
         <object>objects\par_enemy</object>
         <object>objects\obj_enemy</object>

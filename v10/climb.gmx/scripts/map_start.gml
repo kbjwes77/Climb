@@ -2,6 +2,43 @@
 
 // starts a map thats ready to play
 
+var grid = obj_control.level_data;
+var wall = obj_control.tile_id[?"wall"];
+var ww = ds_grid_width(grid);
+var hh = ds_grid_height(grid);
+
+var first = noone;
+var length = 0;
+for (var j = 0; j < hh; j++)
+    {
+    for (var i = 0; i < ww; i++)
+        {
+        if (grid[#i,j] == wall)
+            {
+            if (length == 0)
+                {
+                var inst = instance_create(i*32,j*32,obj_gamewall);
+                first = inst;
+                length += 1;
+                }
+            else
+                {
+                first.image_xscale += 1;
+                length += 1;
+                }
+            }
+        else
+            {
+            if (length != 0)
+                {
+                length = 0;
+                }
+            }
+        }
+    length = 0;
+    }
+
+
 if (lava)
     {
     lava_y = level_height*32;
@@ -37,12 +74,17 @@ with(obj_player_spawn)
         }
     
     with(inst)
+        {
         keybind_set(false);
+        }
+    
     }
 with(obj_enemy_spawn)
     {
     var object_id = asset_get_index(string(data[?"enemy"]));
     if (object_id > -1)
+        {
         instance_create(x+16,y+16,object_id);
+        }
     }
 instance_create(0,0,obj_view);

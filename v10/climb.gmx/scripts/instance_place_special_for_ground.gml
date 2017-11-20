@@ -1,7 +1,9 @@
 ///instance_place_special_for_ground(x, y, obj)
 
-if (place_meeting(argument[0],argument[1],obj_wall))
+if (place_meeting(argument[0],argument[1],obj_gamewall))
+    {
     return(true);
+    }
 
 var obj = instance_place(argument[0],argument[1],argument[2]);
 if (obj != noone)
