@@ -17,7 +17,6 @@ for(var i=0; i<4; i++;)
         switch((collide[i]).object_index)
             {
             case obj_passwall:
-                show_debug_message("Current y: "+string(y));
                 switch ((collide[i]).data[?"rot"])
                     {
                     case 0: 

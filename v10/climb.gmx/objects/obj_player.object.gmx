@@ -25,7 +25,9 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>player = -1;
+            <string>old_check = false;
+
+player = -1;
 slot = -1;
 
 on_ground = false;
@@ -341,9 +343,18 @@ else
     }
 
 // collision detection/response
-xspeed += x_remainder;
-x_remainder = frac(xspeed);
-xspeed -= x_remainder;
+if (old_check)
+    {
+    xspeed += x_remainder;
+    x_remainder = frac(xspeed);
+    xspeed -= x_remainder;
+    }
+else
+    {
+    xspeed += x_remainder;
+    x_remainder = xspeed-round(xspeed);
+    xspeed = round(xspeed);
+    }
 if (!collision_at(x+xspeed,y,par_entity_collider))
     {
     x += xspeed;
@@ -373,10 +384,18 @@ else
     
     xspeed *= 0.8;
     }
-
-yspeed += y_remainder;
-y_remainder = frac(yspeed);
-yspeed -= y_remainder;
+if (old_check)
+    {
+    yspeed += y_remainder;
+    y_remainder = frac(yspeed);
+    yspeed -= y_remainder;
+    }
+else
+    {
+    yspeed += y_remainder;
+    y_remainder = yspeed-round(yspeed);
+    yspeed = round(yspeed);
+    }
 if (!collision_at(x,y+yspeed,par_entity_collider))
     {
     y += yspeed;
@@ -413,7 +432,7 @@ else
         }
     
     if (yspeed &lt; 0)
-        yspeed = 0.6; // original head cieling fuckery &lt;------------------
+        yspeed *= 0.6; // original head cieling fuckery &lt;------------------
     else
         yspeed = 0;
     }
@@ -721,6 +740,37 @@ if (global.debug)
     beep = sin(current_time/1000);
     draw_rectangle(x-beep*32,y-16,x-beep*32,y+16,0);
     draw_text(x,y-24,"BEEP: "+string(beep)+" / ROUND: "+string(round(beep))+" / FRAC: "+string(frac(beep)));
+    }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="79">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>old_check = !old_check; // debug to see which movement rounding is better, frac or round
+if (old_check)
+    {
+    show_debug_message("Frac remainder");
+    }
+else
+    {
+    show_debug_message("Round remainder");
     }
 </string>
           </argument>
