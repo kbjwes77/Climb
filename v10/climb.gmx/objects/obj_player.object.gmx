@@ -36,6 +36,8 @@ jumpspeed = -6;
 jumphold = 0;
 xspeed = 0;
 yspeed = 0;
+x_remainder = 0;
+y_remainder = 0;
 
 lean = 0;
 squash = 0;
@@ -60,6 +62,8 @@ blaster_timer = 0;
 blaster_cooldown = 0;
 
 fucked_inst = noone;
+
+beep = 0;
 </string>
           </argument>
         </arguments>
@@ -82,11 +86,13 @@ fucked_inst = noone;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (keyboard_check_pressed(ord("P")))
+            <string>// pause
+if (keyboard_check_pressed(ord("P")))
     {
     global.paused = !global.paused;
     }
 
+// death and checkpoint stuff
 if !(alive)
     {
     dead_y -= 2;
@@ -260,10 +266,7 @@ if !(climb)
             // jump higher if holding jump
             if (jumphold &gt; 0)
                 {
-                //if (jumphold &gt; 0.4)
-                //    jumphold -= 0.125;
-                //else
-                    jumphold -= 0.1;
+                jumphold -= 0.1;
                 }
             else
                 yspeed += 0.5; // gravity
@@ -331,16 +334,6 @@ else
                 yspeed = jumpspeed;
                 }
             xspeed += (input_right - input_left)*3;
-            
-            // if sprinting 
-            /*if (input_sprint)
-                {
-                jumphold = 1.0;
-                }
-            else
-                {
-                jumphold = 0.5;
-                }*/
 
             climb = false;
             }
@@ -348,6 +341,9 @@ else
     }
 
 // collision detection/response
+xspeed += x_remainder;
+x_remainder = frac(xspeed);
+xspeed -= x_remainder;
 if (!collision_at(x+xspeed,y,par_entity_collider))
     {
     x += xspeed;
@@ -359,21 +355,28 @@ if (!collision_at(x+xspeed,y,par_entity_collider))
     }
 else
     {
-    var sx = sign(xspeed);
-    var tries = 0;
-    while(!collision_at(x+sx,y,par_entity_collider))
+    //if (abs(xspeed) &gt;= 1) // used to fix sideways warping
         {
-        x += sx;
-        tries++;
-        if (tries &gt; 1000)
+        var sx = sign(xspeed);
+        var tries = 0;
+        while(!collision_at(x+sx,y,par_entity_collider))
             {
-            show_debug_message("Breaking free of x while loop.");
-            break;
+            x += sx;
+            tries++;
+            if (tries &gt; 1000)
+                {
+                show_debug_message("Breaking free of x while loop.");
+                break;
+                }
             }
         }
     
     xspeed *= 0.8;
     }
+
+yspeed += y_remainder;
+y_remainder = frac(yspeed);
+yspeed -= y_remainder;
 if (!collision_at(x,y+yspeed,par_entity_collider))
     {
     y += yspeed;
@@ -396,7 +399,7 @@ else
         {
         y += sy;
         tries++;
-        if (tries &gt; 1000)
+        if (tries &gt; ceil(abs(yspeed)))
             {
             fucked_inst = instance_place(x,y+sy,par_entity_collider);
             
@@ -410,7 +413,7 @@ else
         }
     
     if (yspeed &lt; 0)
-        yspeed *= 0.6;
+        yspeed = 0.6; // original head cieling fuckery &lt;------------------
     else
         yspeed = 0;
     }
@@ -441,7 +444,6 @@ with(obj_charger)
     }
     
 // blaster shooting
-
 if (blaster_cooldown &gt; 0)
     {
     blaster_cooldown--;
@@ -459,7 +461,8 @@ if (blaster_cooldown == 0)
             }
         }
     }
-    
+
+// kill user if below map
 if (y &gt; obj_control.level_height*32+256)
     {
     event_user(0);
@@ -704,6 +707,20 @@ if (alive)
 else
     {
     draw_sprite_ext(spr_player,-1,dead_x,dead_y,1,1,0,image_blend,dead_alpha);
+    }
+
+if (global.debug)
+    {
+    draw_set_colour(c_white);
+    draw_set_font(fnt_ui);
+    draw_text(x,y+00,string(x)+":"+string(x_remainder));
+    draw_text(x,y+24,string(y)+":"+string(y_remainder));
+    draw_text(x,y+48,string(xspeed));
+    draw_text(x,y+72,string(yspeed));
+    
+    beep = sin(current_time/1000);
+    draw_rectangle(x-beep*32,y-16,x-beep*32,y+16,0);
+    draw_text(x,y-24,"BEEP: "+string(beep)+" / ROUND: "+string(round(beep))+" / FRAC: "+string(frac(beep)));
     }
 </string>
           </argument>

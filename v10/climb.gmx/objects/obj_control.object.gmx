@@ -754,7 +754,9 @@ if (keyboard_check_pressed(vk_f1))
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>// draw lives
+            <string>draw_set_font(fnt_ui);
+
+// draw lives
 for (var i=0; i&lt;lives; i++)
     {
     draw_sprite(spr_heart,-1,8+i*48,8);

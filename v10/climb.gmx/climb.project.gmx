@@ -79,7 +79,6 @@
   <scripts name="scripts">
     <script>scripts\tile_init.gml</script>
     <script>scripts\collision_at.gml</script>
-    <script>scripts\ground_at.gml</script>
     <script>scripts\particle_create.gml</script>
     <script>scripts\val_to_text.gml</script>
     <scripts name="settings">
@@ -114,6 +113,7 @@
   <fonts name="fonts">
     <font>fonts\fnt_dialogue</font>
     <font>fonts\fnt_score</font>
+    <font>fonts\fnt_ui</font>
   </fonts>
   <objects name="objects">
     <object>objects\obj_control</object>
