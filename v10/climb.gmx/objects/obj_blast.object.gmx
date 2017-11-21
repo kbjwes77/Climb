@@ -52,7 +52,7 @@ yspeed = 0;
             <string>if (global.paused)
     exit;
 
-if !(instance_place_special(x+xspeed,y+yspeed,par_entity_collider))
+if !(collision_at(x+xspeed,y+yspeed,par_entity_collider))
     {
     x += xspeed;
     y += yspeed;

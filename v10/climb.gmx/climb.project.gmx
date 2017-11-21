@@ -78,8 +78,8 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\tile_init.gml</script>
-    <script>scripts\instance_place_special.gml</script>
-    <script>scripts\instance_place_special_for_ground.gml</script>
+    <script>scripts\collision_at.gml</script>
+    <script>scripts\ground_at.gml</script>
     <script>scripts\particle_create.gml</script>
     <script>scripts\val_to_text.gml</script>
     <scripts name="settings">

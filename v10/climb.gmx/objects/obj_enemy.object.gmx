@@ -60,28 +60,28 @@ if (face == 1)
 if (face == -1)
     xspeed = max(-3,xspeed-0.5);
 
-if (instance_place_special(x + 32*face,y,par_entity_collider))
+if (collision_at(x + 32*face,y,par_entity_collider))
     face = -face;
 
-on_ground = instance_place_special_for_ground(x,y+1,par_entity_collider);
+on_ground = ground_at(x,y+1,par_entity_collider);
 
 if (!on_ground)
     yspeed += 0.5;
 
 // collision detection/response
-if (!instance_place_special(x+xspeed,y,par_entity_collider))
+if (!collision_at(x+xspeed,y,par_entity_collider))
     {
     x += xspeed;
     }
 
-if (!instance_place_special(x,y+yspeed,par_entity_collider))
+if (!collision_at(x,y+yspeed,par_entity_collider))
     {
     y += yspeed;
     }
 else
     {
     var sy = sign(yspeed);
-    while(!instance_place_special(x,y+sy,par_entity_collider))
+    while(!collision_at(x,y+sy,par_entity_collider))
         {
         y += sy;
         }

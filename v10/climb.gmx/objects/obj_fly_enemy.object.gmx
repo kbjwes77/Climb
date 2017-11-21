@@ -63,7 +63,7 @@ if (place_meeting(x + 32*face,y,par_entity_collider))
     face = -face;
 
 // collision detection/response
-if (!instance_place_special(x+xspeed,y,par_entity_collider))
+if (!collision_at(x+xspeed,y,par_entity_collider))
     {
     x += xspeed;
     }

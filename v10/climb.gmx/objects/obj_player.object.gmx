@@ -58,6 +58,8 @@ blaster_charges = 0;
 blaster_charges_max = obj_control.level_charges;
 blaster_timer = 0;
 blaster_cooldown = 0;
+
+fucked_inst = noone;
 </string>
           </argument>
         </arguments>
@@ -236,7 +238,7 @@ if !(climb)
     
     // check if we are on the ground
     var last_on_ground = on_ground;
-    on_ground = instance_place_special_for_ground(x,y+1,par_entity_collider) and (yspeed == 0);
+    on_ground = ground_at(x,y+1,par_entity_collider) and (yspeed == 0);
     
     // check if we just landed
     if !(last_on_ground) and (on_ground)
@@ -292,7 +294,7 @@ if !(climb)
     }
 else
     {
-    on_ground = instance_place_special_for_ground(x,y+1,par_entity_collider) and (yspeed == 0);
+    on_ground = collision_at(x,y+1,par_entity_collider) and (yspeed == 0);
     
     // if still not on rope
     if (on_ground and !input_up) or !(point_in_rectangle(x,y,climb_id.x+8,climb_id.y+16,climb_id.x+24,climb_id.y+16 + climb_id.cur_length*32))
@@ -346,7 +348,7 @@ else
     }
 
 // collision detection/response
-if (!instance_place_special(x+xspeed,y,par_entity_collider))
+if (!collision_at(x+xspeed,y,par_entity_collider))
     {
     x += xspeed;
     if (climb)
@@ -359,7 +361,7 @@ else
     {
     var sx = sign(xspeed);
     var tries = 0;
-    while(!instance_place_special(x+sx,y,par_entity_collider))
+    while(!collision_at(x+sx,y,par_entity_collider))
         {
         x += sx;
         tries++;
@@ -372,7 +374,7 @@ else
     
     xspeed *= 0.8;
     }
-if (!instance_place_special(x,y+yspeed,par_entity_collider))
+if (!collision_at(x,y+yspeed,par_entity_collider))
     {
     y += yspeed;
     // keep player from climbing too high or too low off chain
@@ -384,14 +386,25 @@ if (!instance_place_special(x,y+yspeed,par_entity_collider))
 else
     {
     var sy = sign(yspeed);
+    
     var tries = 0;
-    while(!instance_place_special(x,y+sy,par_entity_collider))
+    var _x = x;
+    var _y = y;
+    
+    
+    while(!collision_at(x,y+sy,par_entity_collider))
         {
         y += sy;
         tries++;
         if (tries &gt; 1000)
             {
-            show_debug_message("Breaking free of y while loop.");
+            fucked_inst = instance_place(x,y+sy,par_entity_collider);
+            
+            show_debug_message("Breaking free of y while loop...");
+            show_debug_message("x1/y1["+string(_x)+","+string(_y)+"]");
+            show_debug_message("x2/y2["+string( x)+","+string( y)+"]");
+            show_debug_message("xspeed/yspeed["+string(xspeed)+","+string(yspeed)+"]");
+            show_debug_message("signy["+string(sy)+"]");
             break;
             }
         }
@@ -645,7 +658,18 @@ for (var i=0; i&lt;blaster_charges_max; i++)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (alive)
+            <string>if (fucked_inst != noone)
+    {
+    draw_set_color(c_fuchsia);
+    
+    draw_line(x,y,fucked_inst.x,fucked_inst.y);
+    with(fucked_inst)
+        draw_rectangle(bbox_left,bbox_top,bbox_right,bbox_bottom,1);
+        
+    draw_set_color(c_black);
+    }
+
+if (alive)
     {
     var tex = sprite_get_texture(sprite_index,image_index);
     
