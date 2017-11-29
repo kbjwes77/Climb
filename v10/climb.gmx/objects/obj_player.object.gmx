@@ -629,6 +629,9 @@ and (other.image_index == 0)
     xspeed = 0;
     yspeed = 0;
     
+    climb_id = noone;
+    climb = false;
+    
     lives--;
     }
 </string>
