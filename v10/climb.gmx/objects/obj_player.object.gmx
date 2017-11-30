@@ -244,6 +244,19 @@ if !(climb)
             }
         }
     
+    // get unstuck
+    if (yspeed == 0) and (collision_at(x,y,par_entity_collider))
+        {
+        for(var i=1; i&lt;=64; i++;)
+            {
+            if !(collision_at(x,y-i,par_entity_collider))
+                {
+                y -= i;
+                break;
+                }
+            }
+        }
+    
     // check if we are on the ground
     var last_on_ground = on_ground;
     on_ground = ground_at(x,y+1,par_entity_collider) and (yspeed == 0);
@@ -355,6 +368,7 @@ else
     x_remainder = xspeed-round(xspeed);
     xspeed = round(xspeed);
     }
+
 if (!collision_at(x+xspeed,y,par_entity_collider))
     {
     x += xspeed;
@@ -366,24 +380,22 @@ if (!collision_at(x+xspeed,y,par_entity_collider))
     }
 else
     {
-    //if (abs(xspeed) &gt;= 1) // used to fix sideways warping
+    var sx = sign(xspeed);
+    var tries = 0;
+    while(!collision_at(x+sx,y,par_entity_collider))
         {
-        var sx = sign(xspeed);
-        var tries = 0;
-        while(!collision_at(x+sx,y,par_entity_collider))
+        x += sx;
+        tries++;
+        if (tries &gt; 1000)
             {
-            x += sx;
-            tries++;
-            if (tries &gt; 1000)
-                {
-                show_debug_message("Breaking free of x while loop.");
-                break;
-                }
+            show_debug_message("Breaking free of x while loop.");
+            break;
             }
         }
     
     xspeed *= 0.8;
     }
+
 if (old_check)
     {
     yspeed += y_remainder;
@@ -396,13 +408,16 @@ else
     y_remainder = yspeed-round(yspeed);
     yspeed = round(yspeed);
     }
+
 if (!collision_at(x,y+yspeed,par_entity_collider))
     {
     y += yspeed;
     // keep player from climbing too high or too low off chain
     if (climb)
         {
-        y = clamp(y,climb_id.bbox_top+16,climb_id.bbox_bottom-16);
+        var climb_y = clamp(y,climb_id.bbox_top+16,climb_id.bbox_bottom-16);
+        if !(collision_at(x,climb_y,par_entity_collider))
+            y = climb_y;
         }
     }
 else
