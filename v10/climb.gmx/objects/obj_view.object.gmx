@@ -52,6 +52,10 @@ dialog_timer = 0;
 
 focus = 0;
 done = false;
+
+tip = false;
+tip_text = "";
+ease_tip = 0;
 </string>
           </argument>
         </arguments>
@@ -149,7 +153,41 @@ shake_y *= 0.75;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (dialog or cinematic)
+            <string>ease_tip += (tip - ease_tip)*0.1;
+
+draw_set_font(fnt_ui);
+
+if (ease_tip &gt; 0)
+    {
+    var xpos = (obj_player.x-view_xview[0]);
+    var ypos = (obj_player.y-view_yview[0]) - (24 + 24*ease_tip);
+    var w = string_width(tip_text)+24;
+    var h = string_height(tip_text)+16;
+    
+    draw_set_alpha(ease_tip);
+    
+    draw_set_color($424242);
+    draw_rectangle(xpos - w/2,ypos - h/2,xpos + w/2,ypos + h/2,0);
+    
+    draw_set_halign(1);
+    draw_set_valign(1);
+    draw_set_color($000000);
+    draw_text(xpos-1,ypos-1,tip_text);
+    draw_text(xpos+1,ypos-1,tip_text);
+    draw_text(xpos-1,ypos+1,tip_text);
+    draw_text(xpos+1,ypos+1,tip_text);
+    draw_set_color($CCCCCC);
+    draw_text(xpos,ypos,tip_text);
+    draw_set_color($000000);
+    draw_set_halign(0);
+    draw_set_valign(0);
+    
+    draw_set_alpha(1.0);
+    
+    tip = false;
+    }
+
+if (dialog or cinematic)
     focus += (1 - focus)*0.1;
 else
     focus += (0 - focus)*0.1;

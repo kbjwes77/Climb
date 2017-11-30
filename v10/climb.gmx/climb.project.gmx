@@ -73,6 +73,7 @@
     <sprite>sprites\spr_gamepad</sprite>
     <sprite>sprites\spr_charge</sprite>
     <sprite>sprites\spr_charger</sprite>
+    <sprite>sprites\spr_popup_tip</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -123,6 +124,7 @@
     <objects name="level_entities">
       <object>objects\par_entity</object>
       <object>objects\par_entity_collider</object>
+      <object>objects\par_input</object>
       <object>objects\obj_player_spawn</object>
       <object>objects\obj_enemy_spawn</object>
       <object>objects\obj_enemy_spawn_logic</object>
