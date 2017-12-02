@@ -131,6 +131,7 @@ tile_init("cinematic",obj_cinematic,spr_cinematic,group.device,22);
 tile_init("dialog",obj_dialog,spr_dialog,group.device,23);
 tile_init("chain",obj_chain,spr_chain,group.device,24);
 tile_init("charger",obj_charger,spr_charger,group.device,26);
+tile_init("lava",obj_lava_trigger,spr_lava_trigger,group.device,27);
 // pickups
 tile_init("point",obj_point,spr_point,group.pickup,17);
 

@@ -74,6 +74,7 @@
     <sprite>sprites\spr_charge</sprite>
     <sprite>sprites\spr_charger</sprite>
     <sprite>sprites\spr_popup_tip</sprite>
+    <sprite>sprites\spr_lava_trigger</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -151,6 +152,7 @@
       <object>objects\obj_diamond</object>
       <object>objects\obj_chain</object>
       <object>objects\obj_charger</object>
+      <object>objects\obj_lava_trigger</object>
     </objects>
     <objects name="game_objects">
       <object>objects\par_gameobject</object>
